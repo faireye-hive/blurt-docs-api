@@ -351,6 +351,9 @@
                     <a href="#get_account_history" class="toc-h2 toc-link" data-title="get_account_history">get_account_history</a>
                   </li>
                   <li>
+                    <a href="#exemplos" class="toc-h2 toc-link" data-title="💡 Exemplos">💡 Exemplos</a>
+                  </li>
+                  <li>
                     <a href="#get_accounts" class="toc-h2 toc-link" data-title="get_accounts">get_accounts</a>
                   </li>
               </ul>
@@ -696,14 +699,41 @@ curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">
 </span></code></pre></div><h2 id='get_account_history'>get_account_history</h2>
 <p>Returns a history of all operations for a given account. Parameters:</p>
 <h3 id='query-parameters-5'>Query Parameters</h3>
-<p><em>account</em>: username
-<em>start</em>: -1 = recent or 1000 = oldest result || [&quot;bgo&quot;, -1, 1000] || [&quot;bgo&quot;, 1000, 1000]
-<em>limit</em>: 1000 is the max allowed [&quot;bgo&quot;, -1, 1000]
-<em>operation_filter_low</em>: empty = all results, 1 for votes only, 262144 for only custom jsons || [&quot;bgo&quot;, -1, 1000, 1] || [&quot;bgo&quot;, -1, 1000, 262144]
-the last <em>operation_filter_low</em>: empty all result, 1 for only proposal payments need the other one 0 || [&quot;bgo&quot;, -1, 1000, 0, 1]</p>
+<table><thead>
+<tr>
+<th>Nome</th>
+<th>O que faz</th>
+<th>Exemplo</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>account</code></td>
+<td>Nome da conta</td>
+<td><code>&quot;bgo&quot;</code></td>
+</tr>
+<tr>
+<td><code>start</code></td>
+<td>Onde começar (<code>-1</code> = novo, <code>1000</code> = antigo)</td>
+<td><code>-1</code></td>
+</tr>
+<tr>
+<td><code>limit</code></td>
+<td>Quantos mostrar (máx. <code>1000</code>)</td>
+<td><code>1000</code></td>
+</tr>
+<tr>
+<td><code>operation_filter_low</code></td>
+<td>Tipo de ação:<br>• vazio = tudo<br>• <code>1</code> = votos<br>• <code>262144</code> = mensagens<br>• <code>0, 1</code> = pagamentos</td>
+<td><code>1</code></td>
+</tr>
+</tbody></table>
 
-<p>[account(string), start(int), limit(int), operation_filter_low(int), operation_filter_low(int) ]</p>
-<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+<hr>
+<h2 id='exemplos'>💡 Exemplos</h2><div class="highlight"><pre class="highlight javascript"><code><span class="p">[</span><span class="dl">"</span><span class="s2">bgo</span><span class="dl">"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]</span>          <span class="c1">// tudo</span>
+<span class="p">[</span><span class="dl">"</span><span class="s2">bgo</span><span class="dl">"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>       <span class="c1">// só votos</span>
+<span class="p">[</span><span class="dl">"</span><span class="s2">bgo</span><span class="dl">"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">262144</span><span class="p">]</span>  <span class="c1">// só mensagens</span>
+<span class="p">[</span><span class="dl">"</span><span class="s2">bgo</span><span class="dl">"</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>    <span class="c1">// só pagamentos</span>
+</code></pre></div><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
 curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"condenser_api.get_account_history", "params":["bgo", -1, 2], "id":1}'</span>  https://rpc.blurt.world
 </code></pre></div>
 <blockquote>
