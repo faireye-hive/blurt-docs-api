@@ -1,8 +1,10 @@
 ---
 title: Blurt API Reference
 
-language_tabs: # Idiomas que aparecerão nas abas de código
-  - shell
+language_tabs:
+  - shell: cURL
+  - javascript: JavaScript
+  - json: JSON
 
 toc_footers:
   - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
@@ -339,8 +341,6 @@ Returns a history of all operations for a given account. Parameters:
 | `operation_filter_low` | Tipo de ação:<br>• vazio = tudo<br>• `1` = votos<br>• `262144` = mensagens<br>• `0, 1` = pagamentos | `1` |
 
 ---
-
-## 💡 Exemplos
 
 ```js
 ["bgo", -1, 1000]          // tudo
