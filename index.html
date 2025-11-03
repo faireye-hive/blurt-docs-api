@@ -5,7 +5,11 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Documentation</title>
+        <meta
+            name="description"
+            content="Documentação para a API da Blurt Blockchain"
+        >
+    <title>Blurt API Reference</title>
 
     <style media="screen">
       .highlight table td { padding: 5px; }
@@ -284,11 +288,14 @@
     </style>
     <link href="stylesheets/screen-9c19b03a.css" rel="stylesheet" media="screen" />
     <link href="stylesheets/print-966d6edc.css" rel="stylesheet" media="print" />
-      <script src="javascripts/all_nosearch-53bdb4f3.js"></script>
+      <script src="javascripts/all-024da600.js"></script>
 
+    <script>
+      $(function() { setupCodeCopy(); });
+    </script>
   </head>
 
-  <body class="index" data-languages="[]">
+  <body class="index" data-languages="[&quot;shell&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -297,7 +304,28 @@
     </a>
     <div class="toc-wrapper">
       <img src="images/logo-1e815a84.png" class="logo" alt="" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">shell</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
       <ul id="toc" class="toc-list-h1">
+          <li>
+            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+          </li>
+          <li>
+            <a href="#blocks" class="toc-h1 toc-link" data-title="Blocks">Blocks</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#get_block_header" class="toc-h2 toc-link" data-title="get_block_header">get_block_header</a>
+                  </li>
+                  <li>
+                    <a href="#get_block" class="toc-h2 toc-link" data-title="get_block">get_block</a>
+                  </li>
+              </ul>
+          </li>
           <li>
             <a href="#condenser-api" class="toc-h1 toc-link" data-title="Condenser API">Condenser API</a>
               <ul class="toc-list-h2">
@@ -308,351 +336,317 @@
                     <a href="#get_chain_properties" class="toc-h2 toc-link" data-title="get_chain_properties">get_chain_properties</a>
                   </li>
                   <li>
-                    <a href="#get_feed_history" class="toc-h2 toc-link" data-title="get_feed_history">get_feed_history</a>
-                  </li>
-                  <li>
-                    <a href="#get_current_median_history_price" class="toc-h2 toc-link" data-title="get_current_median_history_price">get_current_median_history_price</a>
-                  </li>
-                  <li>
                     <a href="#get_discussions_by_author_before_date" class="toc-h2 toc-link" data-title="get_discussions_by_author_before_date">get_discussions_by_author_before_date</a>
-                  </li>
-                  <li>
-                    <a href="#get_collateralized_conversion_requests" class="toc-h2 toc-link" data-title="get_collateralized_conversion_requests">get_collateralized_conversion_requests</a>
                   </li>
               </ul>
           </li>
+          <li>
+            <a href="#errors" class="toc-h1 toc-link" data-title="Errors">Errors</a>
+          </li>
       </ul>
+        <ul class="toc-footer">
+            <li><a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a></li>
+        </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <div class="highlight"><pre class="highlight markdown tab-markdown"><code><span class="nn">---</span>
-<span class="na">title</span><span class="pi">:</span> <span class="s">Blurt API Reference</span>
+        <h1 id='introduction'>Introduction</h1>
+<p>Bem-vindo à documentação da API da Blurt! Você pode usar nossa API para acessar os endpoints da blockchain da Blurt.</p>
 
-<span class="na">language_tabs</span><span class="pi">:</span> <span class="c1"># Idiomas que aparecerão nas abas de código</span>
-  <span class="pi">-</span> <span class="s">shell</span>
-
-<span class="na">toc_footers</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">&lt;a href='https://github.com/slatedocs/slate'&gt;Documentation Powered by Slate&lt;/a&gt;</span>
-
-<span class="na">includes</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="s">errors</span>
-
-<span class="na">search</span><span class="pi">:</span> <span class="no">true</span>
-
-<span class="na">code_clipboard</span><span class="pi">:</span> <span class="no">true</span>
-
-<span class="na">meta</span><span class="pi">:</span>
-  <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">description</span>
-    <span class="na">content</span><span class="pi">:</span> <span class="s">Documentação para a API da Blurt Blockchain</span>
-<span class="nn">---</span>
-
-<span class="gh"># Introduction</span>
-
-Bem-vindo à documentação da API da Blurt! Você pode usar nossa API para acessar os endpoints da blockchain da Blurt.
-
-Os exemplos de código estão na área escura à direita.
-
-<span class="gh"># Blocks</span>
-
-Used to query values related to the block plugin. These AppBase API methods are still under development and subject to change.
-
-<span class="gu">## get_block_header</span>
-
-<span class="p">```</span><span class="nl">shell
-</span><span class="c"># Exemplo de Requisição</span>
-curl <span class="s2">"[https://hivexplorer.com/api/get_block_header?block_num=8675309](https://hivexplorer.com/api/get_block_header?block_num=8675309)"</span>
-</code></pre></div>
-<blockquote>
-<p>O comando acima retorna um JSON estruturado assim:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"header"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"extensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-    </span><span class="nl">"previous"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00845fec1c00bd07264f68c1fc50e989b7ca0160"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-01-21T16:33:06"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"transaction_merkle_root"</span><span class="p">:</span><span class="w"> </span><span class="s2">"c034bfb36fe4401ce2a4d10f3e595a62be2eddd7"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pfunk"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
+<p>Os exemplos de código estão na área escura à direita.</p>
+<h1 id='blocks'>Blocks</h1>
+<p>Used to query values related to the block plugin. These AppBase API methods are still under development and subject to change.</p>
+<h2 id='get_block_header'>get_block_header</h2>
 <p>Retrieve a block header of the referenced block, or null if no matching block was found.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET /api/get_block_header</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
-<p>Parameter | Description
---------- | -----------
-<code>block_num</code> (int) | Queries the block headers for a specific block number.</p>
-<h2 id='get_block'>get_block</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
-curl <span class="s2">"[https://hivexplorer.com/api/get_block?block_num=8675309](https://hivexplorer.com/api/get_block?block_num=8675309)"</span>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>block_num</code> (int)</td>
+<td>Queries the block headers for a specific block number.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"block_api.get_block_header", "params":{"block_num":8675309}, "id":1}'</span> https://rpc.blurt.world
 </code></pre></div>
 <blockquote>
 <p>O comando acima retorna um JSON estruturado assim:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"previous"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000000000000000000000000000000000000"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2016-03-24T16:05:00"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="s2">"initminer"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"transaction_merkle_root"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000000000000000000000000000000000000"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"extensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-  </span><span class="nl">"witness_signature"</span><span class="p">:</span><span class="w"> </span><span class="s2">"204f8ad56a8f5cf722a02b035a61b500aa59b9519b2c33c77a80c0a714680a5a5a7a340d909d19996613c5e4ae92146b9add8a7a663eef37d837ef881477313043"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"transactions"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-  </span><span class="nl">"block_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000109833ce528d5bbfb3f6225b39ee10086"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"signing_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"STM8GC13uCZbP44HzMLV6zPZGwVQ8Nt4Kji8PapsPiNq1BK153XTX"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"transaction_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>Retrieve a full, signed block of the referenced block, or null if no matching block was found.</p>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET /api/get_block</code></p>
-<h3 id='query-parameters-2'>Query Parameters</h3>
-<p>Parameter | Description
---------- | -----------
-<code>block_num</code> (int) | Queries a specific block number.</p>
-<h2 id='get_block_range'>get_block_range</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
-curl <span class="s2">"[https://hivexplorer.com/api/get_block_range?starting_block_num=70548020&amp;count=15](https://hivexplorer.com/api/get_block_range?starting_block_num=70548020&amp;count=15)"</span>
-</code></pre></div>
-<blockquote>
-<p>O comando acima retorna um JSON estruturado assim:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"blocks"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"previous"</span><span class="p">:</span><span class="w"> </span><span class="s2">"04347a33f9155dc51c88601e782dcb86c4e5088b"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-12-15T13:46:54"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="s2">"arcange"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"transaction_merkle_root"</span><span class="p">:</span><span class="w"> </span><span class="s2">"cba20a1395221712b10fd20c38de08e2a5759cbc"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"extensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-      </span><span class="nl">"witness_signature"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20f491bcfff5854cbec6105633334ce89fabbd9e1dc03866dca27969e0375056392ea2ab87355ee85c13d261fc7cd2b52bf3278035ab8227f739091474e3a1480c"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"transactions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"header"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"previous"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00845fec025ede5178d189f904b7eec417d21227"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-05-07T04:21:15"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blurthispano"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"transaction_merkle_root"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000000000000000000000000000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"extensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
         </span><span class="p">{</span><span class="w">
-          </span><span class="nl">"ref_block_num"</span><span class="p">:</span><span class="w"> </span><span class="mi">31282</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"ref_block_prefix"</span><span class="p">:</span><span class="w"> </span><span class="mi">237252741</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"expiration"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2022-12-15T13:47:18"</span><span class="p">,</span><span class="w">
-          </span><span class="nl">"operations"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="p">{</span><span class="w">
-              </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"custom_json_operation"</span><span class="p">,</span><span class="w">
-              </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-                </span><span class="nl">"required_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-                  </span><span class="s2">"checkyzk"</span><span class="w">
-                </span><span class="p">],</span><span class="w">
-                </span><span class="nl">"required_posting_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-                </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sm_market_rent"</span><span class="p">,</span><span class="w">
-                </span><span class="nl">"json"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">items</span><span class="se">\"</span><span class="s2">:[</span><span class="se">\"</span><span class="s2">6ae699d473a4fa9613b83045192b879ceef58fdd-2</span><span class="se">\"</span><span class="s2">],</span><span class="se">\"</span><span class="s2">currency</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">DEC</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">days</span><span class="se">\"</span><span class="s2">:2,</span><span class="se">\"</span><span class="s2">player</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">dudoicon</span><span class="se">\"</span><span class="s2">}"</span><span class="w">
-              </span><span class="p">}</span><span class="w">
-            </span><span class="p">}</span><span class="w">
-          </span><span class="p">],</span><span class="w">
-          </span><span class="nl">"extensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-          </span><span class="nl">"signatures"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-            </span><span class="s2">"1f4ce4b443938051dbdc6f2042a78cd86876b2beb825d1dd1ec5f4fcd9e0d54fb00c50f641a37ef04973145496512aaf7417b4285a3e212c4171c18b3bc43aa699"</span><span class="w">
-          </span><span class="p">]</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fee_info"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"operation_flat_fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nl">"bandwidth_kbytes_fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="w"> </span><span class="p">}</span><span class="w">
         </span><span class="p">}</span><span class="w">
-      </span><span class="p">],</span><span class="w">
-      </span><span class="nl">"block_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"04347a34af5312512765bab3a2e40c8602254957"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"signing_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"STM6Z9ZtRoEXPqsMRTFqLopuL9jDg5gydcwkQEoWazg6uhGTkbYKM"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"transaction_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-        </span><span class="s2">"b4a607f19e4fc9ffa9da11fbc2b65c7ad26671b9"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"67c5ae6732f4fb383f6b41f30ee3d458410cb173"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"767783b233f97401b8383f1af431573917a10161"</span><span class="p">,</span><span class="w">
-        </span><span class="s2">"5fe0e855a9867776e9b3b438ba457b6d75796598"</span><span class="w">
       </span><span class="p">]</span><span class="w">
     </span><span class="p">}</span><span class="w">
-  </span><span class="p">]</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>Retrieve a range of full, signed blocks. The list may be shorter than requested if count blocks would take you past the current head block.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>GET /api/get_block_range</code></p>
-<h3 id='query-parameters-3'>Query Parameters</h3>
-<p>Parameter | Description
---------- | -----------
-<code>starting_block_num</code> (int) | Height of the first block to be returned
-<code>count</code> (int) | The maximum number of blocks to return</p>
-<h1 id='condenser-api'>Condenser API</h1>
+</span></code></pre></div><h2 id='get_block'>get_block</h2>
+<p>Retrieve a full, signed block of the referenced block, or null if no matching block was found.</p>
+<h3 id='query-parameters-2'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>block_num</code> (int)</td>
+<td>Queries a specific block number.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"block_api.get_block", "params":{"block_num":8675309}, "id":1}'</span> https://rpc.blurt.world
+</code></pre></div>
+<blockquote>
+<p>O comando acima retorna um JSON estruturado assim:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"block"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"previous"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00845fec025ede5178d189f904b7eec417d21227"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-05-07T04:21:15"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"witness"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blurthispano"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"transaction_merkle_root"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0000000000000000000000000000000000000000"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"extensions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w">
+          </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fee_info"</span><span class="p">,</span><span class="w">
+          </span><span class="nl">"value"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nl">"operation_flat_fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nl">"bandwidth_kbytes_fee"</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="w"> </span><span class="p">}</span><span class="w">
+        </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"witness_signature"</span><span class="p">:</span><span class="w"> </span><span class="s2">"20e8e29ff76df5cca9223644c36ae8da54be2820fdf18ce3397119b05fc77c95d85f1cab89fc47cde620fa01e1f395cfb2e314d06175088801e442c82c08c7da59"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"transactions"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"block_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"00845fed151ce8e36159d9e2360303b1247a4515"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"signing_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BLT5wqzRhKp6y5ea1b8uW8TsK87owrbBT95Ww8DUEtbdS7PhLeUVd"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"transaction_ids"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h1 id='condenser-api'>Condenser API</h1>
 <p>All calls in condenser_api will return [] as the argument, as the array argument passing is opaque and implemented in the API calls themselves. They follow the current argument formatting. Existing apps should only need to skip using login_api and send all of their calls to condenser_api without any other changes required to use Appbase.</p>
-<h2 id='get_trending_tags'>get_trending_tags</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
-curl <span class="s2">"[https://hivexplorer.com/api/get_trending_tags?start_tag=%22aaa%22&amp;limit=10](https://hivexplorer.com/api/get_trending_tags?start_tag=%22aaa%22&amp;limit=10)"</span>
+<h2 id='get_trending_tags'>get_trending_tags</h2><h3 id='query-parameters-3'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>tag</code> (string)</td>
+<td><code>null</code></td>
+<td>Queries the top trending tags.</td>
+</tr>
+<tr>
+<td><code>limit</code> (int)</td>
+<td>100</td>
+<td>Queries the tags after <code>tag</code>, up to <code>limit</code> tags.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"condenser_api.get_trending_tags", "params":["blurt",1], "id":1}'</span> https://rpc.blurt.world
 </code></pre></div>
-<blockquote>
-<p>O comando acima retorna um JSON estruturado assim:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"total_payouts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"net_votes"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"top_posts"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"comments"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"trending"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre></div>
 <p>Returns the list of trending tags.</p>
-<h3 id='http-request-4'>HTTP Request</h3>
-<p><code>GET /api/get_trending_tags</code></p>
-<h3 id='query-parameters-4'>Query Parameters</h3>
-<p>Parameter | Default | Description
---------- | ------- | -----------
-<code>tag</code> (string) | <code>null</code> | Queries the top trending tags.
-<code>limit</code> (int) | 100 | Queries the tags after <code>tag</code>, up to <code>limit</code> tags.</p>
-<h2 id='get_chain_properties'>get_chain_properties</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
-curl <span class="s2">"[https://hivexplorer.com/api/get_chain_properties](https://hivexplorer.com/api/get_chain_properties)"</span>
-</code></pre></div>
+
 <blockquote>
 <p>O comando acima retorna um JSON estruturado assim:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"account_creation_fee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.000 HIVE"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"maximum_block_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">65536</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"hbd_interest_rate"</span><span class="p">:</span><span class="w"> </span><span class="mi">2000</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"account_subsidy_budget"</span><span class="p">:</span><span class="w"> </span><span class="mi">797</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"account_subsidy_decay"</span><span class="p">:</span><span class="w"> </span><span class="mi">347321</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>Returns the chain properties.</p>
-<h3 id='http-request-5'>HTTP Request</h3>
-<p><code>GET /api/get_chain_properties</code></p>
-<h2 id='get_feed_history'>get_feed_history</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
-curl <span class="s2">"[https://hivexplorer.com/api/get_feed_history](https://hivexplorer.com/api/get_feed_history)"</span>
-</code></pre></div>
-<blockquote>
-<p>O comando acima retorna um JSON estruturado assim:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"current_median_history"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"base"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.405 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"quote"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.000 HIVE"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="nl">"market_median_history"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"base"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.405 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"quote"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.000 HIVE"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="nl">"current_min_history"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"base"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.397 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"quote"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.000 HIVE"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="nl">"current_max_history"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"base"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.422 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"quote"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.000 HIVE"</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="nl">"price_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+  </span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
     </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"base"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.416 HBD"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"quote"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.000 HIVE"</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"rewards"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"comments"</span><span class="p">:</span><span class="w"> </span><span class="mi">396</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"top_posts"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"total_payouts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"74661.630 BLURT"</span><span class="w">
     </span><span class="p">},</span><span class="w">
     </span><span class="p">{</span><span class="w">
-      </span><span class="nl">"base"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.412 HBD"</span><span class="p">,</span><span class="w">
-      </span><span class="nl">"quote"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.000 HIVE"</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"kr"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"comments"</span><span class="p">:</span><span class="w"> </span><span class="mi">44</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"top_posts"</span><span class="p">:</span><span class="w"> </span><span class="mi">96</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"total_payouts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"32423.738 BLURT"</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blurt"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"comments"</span><span class="p">:</span><span class="w"> </span><span class="mi">68</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"top_posts"</span><span class="p">:</span><span class="w"> </span><span class="mi">96</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"total_payouts"</span><span class="p">:</span><span class="w"> </span><span class="s2">"27303.856 BLURT"</span><span class="w">
     </span><span class="p">}</span><span class="w">
-  </span><span class="p">]</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>Returns the history of price feed values.</p>
-<h3 id='http-request-6'>HTTP Request</h3>
-<p><code>GET /api/get_feed_history</code></p>
-<h2 id='get_current_median_history_price'>get_current_median_history_price</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
-curl <span class="s2">"[https://hivexplorer.com/api/get_current_median_history_price](https://hivexplorer.com/api/get_current_median_history_price)"</span>
+</span></code></pre></div><h2 id='get_chain_properties'>get_chain_properties</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"condenser_api.get_chain_properties", "params":[], "id":1}'</span> https://rpc.blurt.world
+</code></pre></div>
+<p>Returns the chain properties.</p>
+
+<blockquote>
+<p>O comando acima retorna um JSON estruturado assim:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nl">"account_creation_fee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"100.000 BLURT"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"maximum_block_size"</span><span class="p">:</span><span class="w"> </span><span class="mi">65536</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"account_subsidy_budget"</span><span class="p">:</span><span class="w"> </span><span class="mi">797</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"account_subsidy_decay"</span><span class="p">:</span><span class="w"> </span><span class="mi">347321</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"operation_flat_fee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.050 BLURT"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"bandwidth_kbytes_fee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.200 BLURT"</span><span class="p">,</span><span class="w">
+    </span><span class="nl">"proposal_fee"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000.000 BLURT"</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2 id='get_discussions_by_author_before_date'>get_discussions_by_author_before_date</h2><h3 id='query-parameters-4'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><code>author</code> (string)</td>
+<td>The author to query.</td>
+</tr>
+<tr>
+<td><code>permlink</code> (string)</td>
+<td>The permlink to query.</td>
+</tr>
+<tr>
+<td><code>date</code> (string)</td>
+<td>The date to query before (ISO format).</td>
+</tr>
+<tr>
+<td><code>limit</code> (int)</td>
+<td>The number of results to return.</td>
+</tr>
+</tbody></table>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"condenser_api.get_discussions_by_author_before_date", "params":["hiveio","firstpost","2025-04-19T22:49:43",1], "id":1}'</span> https://api.hive.blog
 </code></pre></div>
 <blockquote>
 <p>O comando acima retorna um JSON estruturado assim:</p>
 </blockquote>
 <div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="nl">"base"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.405 HBD"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"quote"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.000 HIVE"</span><span class="w">
+  </span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"post_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1837728</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hellobot"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"permlink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hellobot"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Current day: 2025-11-02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"body"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Aloha!</span><span class="se">\n</span><span class="s2">## Blurt Statistics</span><span class="se">\n</span><span class="s2">- **New Accounts**: 2</span><span class="se">\n</span><span class="s2">- **New Votes**: 4452</span><span class="se">\n</span><span class="s2">- **New Articles**: 298</span><span class="se">\n</span><span class="s2">- **New Comments**: 303</span><span class="se">\n</span><span class="s2">- **Welcome to new users:** @karphiy, @jompiy</span><span class="se">\n</span><span class="s2">## Special dates</span><span class="se">\n</span><span class="s2">- **The time remaining until the new year**: 61 days remaining</span><span class="se">\n</span><span class="s2">- **Time for summer holidays**: 242 days remaining</span><span class="se">\n</span><span class="s2">- **Time for Santa Claus**: 35 days remaining</span><span class="se">\n</span><span class="s2">## Blurt's DApps</span><span class="se">\n</span><span class="s2">- [BlurtLatam](//blurtlatam.intinte.org): Alternative to Blurt.blog uncensored interface</span><span class="se">\n</span><span class="s2">- [BlurtCreator](//blurtcreator.intinte.org): Free account creator for Blurt Blockchain</span><span class="se">\n</span><span class="s2">- [Swap Pools](//beeswap.dcity.io/pools?search=blurt): Earn from providing liquidity and support Blurt's security</span><span class="se">\n</span><span class="s2">- [Khrom's Tutorials](//blurt.pl): Gain knowledge about Blurt from Khrom user guides"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"json_metadata"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">tags</span><span class="se">\"</span><span class="s2">:[</span><span class="se">\"</span><span class="s2">hellobot</span><span class="se">\"</span><span class="s2">]}"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-01T23:05:09"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_update"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-01T23:05:09"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"depth"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"children"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"net_rshares"</span><span class="p">:</span><span class="w"> </span><span class="mi">1651741638</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_payout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1969-12-31T23:59:59"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"cashout_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-08T23:05:09"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"total_payout_value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"curator_payout_value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pending_payout_value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"3.271 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"promoted"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"replies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"body_length"</span><span class="p">:</span><span class="w"> </span><span class="mi">734</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"active_votes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+        </span><span class="p">{</span><span class="w"> </span><span class="nl">"voter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"fervi"</span><span class="p">,</span><span class="w"> </span><span class="nl">"rshares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"151518960"</span><span class="p">,</span><span class="w"> </span><span class="nl">"percent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000"</span><span class="w"> </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w"> </span><span class="nl">"voter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hellobot"</span><span class="p">,</span><span class="w"> </span><span class="nl">"rshares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"193065359"</span><span class="p">,</span><span class="w"> </span><span class="nl">"percent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000"</span><span class="w"> </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w"> </span><span class="nl">"voter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"marendan"</span><span class="p">,</span><span class="w"> </span><span class="nl">"rshares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"151225551"</span><span class="p">,</span><span class="w"> </span><span class="nl">"percent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10000"</span><span class="w"> </span><span class="p">},</span><span class="w">
+        </span><span class="p">{</span><span class="w"> </span><span class="nl">"voter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"blurtpowerbot"</span><span class="p">,</span><span class="w"> </span><span class="nl">"rshares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1155931768"</span><span class="p">,</span><span class="w"> </span><span class="nl">"percent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"149"</span><span class="w"> </span><span class="p">}</span><span class="w">
+      </span><span class="p">],</span><span class="w">
+      </span><span class="nl">"parent_author"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"parent_permlink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hellobot"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/hellobot/@hellobot/2025-11-02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"root_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Current day: 2025-11-02"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"beneficiaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"max_accepted_payout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000000.000 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"percent_blurt"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre></div>
-<p>Get current median market price.</p>
-<h3 id='http-request-7'>HTTP Request</h3>
-<p><code>GET /api/get_current_median_history_price</code></p>
-<h2 id='get_discussions_by_author_before_date'>get_discussions_by_author_before_date</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
-curl <span class="s2">"[https://hivexplorer.com/api/get_discussions_by_author_before_date?author=%22ecency%22&amp;permlink=%22ecency-development-and-maintenance-4%22&amp;date=2023-11-04T22:49:43&amp;limit=2](https://hivexplorer.com/api/get_discussions_by_author_before_date?author=%22ecency%22&amp;permlink=%22ecency-development-and-maintenance-4%22&amp;date=2023-11-04T22:49:43&amp;limit=2)"</span>
-</code></pre></div>
-<blockquote>
-<p>O comando acima retorna um JSON estruturado assim:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="nl">"active_votes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"percent"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4000"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"reputation"</span><span class="p">:</span><span class="w"> </span><span class="mi">341233778618</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"rshares"</span><span class="p">:</span><span class="w"> </span><span class="mi">768760982022</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"voter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"boatymcboatface"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-    </span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ecency"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"author_reputation"</span><span class="p">:</span><span class="w"> </span><span class="mi">481129921188588</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"beneficiaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-    </span><span class="nl">"body"</span><span class="p">:</span><span class="w"> </span><span class="s2">"The #24 edition of the Monthly Guest Curation Program..."</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"body_length"</span><span class="p">:</span><span class="w"> </span><span class="mi">3797</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"cashout_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1969-12-31T23:59:59"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"category"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ecency"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"children"</span><span class="p">:</span><span class="w"> </span><span class="mi">15</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-10-30T09:45:54"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"curator_payout_value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.845 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"depth"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"json_metadata"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">image</span><span class="se">\"</span><span class="s2">:[</span><span class="se">\"</span><span class="s2">[https://cdn.discordapp.com](https://cdn.discordapp.com)...</span><span class="se">\"</span><span class="s2">],</span><span class="se">\"</span><span class="s2">tags</span><span class="se">\"</span><span class="s2">:[</span><span class="se">\"</span><span class="s2">ecency</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">hive</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">curation</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">guestcurators</span><span class="se">\"</span><span class="s2">],</span><span class="se">\"</span><span class="s2">description</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">app</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">ecency/3.0.36-vision</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">format</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">markdown+html</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">image_ratios</span><span class="se">\"</span><span class="s2">:[</span><span class="se">\"</span><span class="s2">1.0000</span><span class="se">\"</span><span class="s2">]}"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"last_payout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-11-06T09:45:54"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"last_update"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2023-11-04T11:11:30"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"max_accepted_payout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000000.000 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"net_rshares"</span><span class="p">:</span><span class="w"> </span><span class="mi">37317216249639</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"parent_author"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"parent_permlink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ecency"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"pending_payout_value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"percent_hbd"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"permlink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ecency-monthly-guest-curation-program-d34368ec623ec"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"post_id"</span><span class="p">:</span><span class="w"> </span><span class="mi">128422803</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"promoted"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"replies"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
-    </span><span class="nl">"root_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ecency Monthly Guest Curation Program #25"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Ecency Monthly Guest Curation Program #25"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"total_payout_value"</span><span class="p">:</span><span class="w"> </span><span class="s2">"8.902 HBD"</span><span class="p">,</span><span class="w">
-    </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"/ecency/@ecency/ecency-monthly-guest-curation-program-d34368ec623ec"</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
-</span></code></pre></div>
-<p>condenser_api.get_discussions_by_author_before_date</p>
-<h3 id='http-request-8'>HTTP Request</h3>
-<p><code>GET /api/get_discussions_by_author_before_date</code></p>
-<h3 id='query-parameters-5'>Query Parameters</h3>
-<p>Parameter | Description
---------- | -----------
-<code>author</code> (string) | The author to query.
-<code>permlink</code> (string) | The permlink to query.
-<code>date</code> (string) | The date to query before (ISO format).
-<code>limit</code> (int) | The number of results to return.</p>
-<h2 id='get_collateralized_conversion_requests'>get_collateralized_conversion_requests</h2><div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
-curl <span class="s2">"[https://hivexplorer.com/api/get_collateralized_conversion_requests?account=%22hbdstabilizer%22](https://hivexplorer.com/api/get_collateralized_conversion_requests?account=%22hbdstabilizer%22)"</span>
-</code></pre></div>
-<blockquote>
-<p>O comando acima retorna um JSON estruturado assim:</p>
-</blockquote>
-<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">[]</span><span class="w">
-</span></code></pre></div>
-<p>Get HIVE to HBD (Collateralized) convert requests.</p>
-<h3 id='http-request-9'>HTTP Request</h3>
-<p><code>GET /api/get_collateralized_conversion_requests</code></p>
-<h3 id='query-parameters-6'>Query Parameters</h3>
-<p>Parameter | Description
---------- | -----------
-<code>account</code> (string) | The account to query requests for.</p>
-<div class="highlight"><pre class="highlight plaintext"><code>
----
+</span></code></pre></div><h1 id='errors'>Errors</h1>
+<aside class="notice">
+This error section is stored in a separate file in <code>includes/_errors.md</code>. Slate allows you to optionally separate out your docs into many files...just save them to the <code>includes</code> folder and add them to the top of your <code>index.md</code>'s frontmatter. Files are included in the order listed.
+</aside>
 
-### O que eu fiz:
+<p>The Kittn API uses the following error codes:</p>
 
-1.  **Mudei o Título:** Atualizei o `title` e a `description` no cabeçalho (YAML) para "Blurt API Reference".
-2.  **Limpei a Introdução:** Removi as referências aos "Kittens" (gatinhos) e deixei uma introdução genérica.
-3.  **Removi a Autenticação:** Removi a seção de autenticação dos gatinhos, já que seus endpoints não parecem usá-la.
-4.  **Tradução para Markdown:** Peguei seu HTML para `Blocks` e `Condenser API` e o converti para o formato que o Slate usa:
-    * `## Título` para cada endpoint.
-    * ` ```shell ` para os exemplos de URL (que vão para a direita).
-    * ` ```json ` para as respostas (que vão para a direita).
-    * Tabelas Markdown para os parâmetros.
-</code></pre></div>
+<table><thead>
+<tr>
+<th>Error Code</th>
+<th>Meaning</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>400</td>
+<td>Bad Request -- Your request is invalid.</td>
+</tr>
+<tr>
+<td>401</td>
+<td>Unauthorized -- Your API key is wrong.</td>
+</tr>
+<tr>
+<td>403</td>
+<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
+</tr>
+<tr>
+<td>404</td>
+<td>Not Found -- The specified kitten could not be found.</td>
+</tr>
+<tr>
+<td>405</td>
+<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
+</tr>
+<tr>
+<td>406</td>
+<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
+</tr>
+<tr>
+<td>410</td>
+<td>Gone -- The kitten requested has been removed from our servers.</td>
+</tr>
+<tr>
+<td>418</td>
+<td>I&#39;m a teapot.</td>
+</tr>
+<tr>
+<td>429</td>
+<td>Too Many Requests -- You&#39;re requesting too many kittens! Slow down!</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Internal Server Error -- We had a problem with our server. Try again later.</td>
+</tr>
+<tr>
+<td>503</td>
+<td>Service Unavailable -- We&#39;re temporarily offline for maintenance. Please try again later.</td>
+</tr>
+</tbody></table>
+
       </div>
       <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">shell</a>
+          </div>
       </div>
     </div>
   </body>
