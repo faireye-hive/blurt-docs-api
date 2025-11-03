@@ -190,12 +190,12 @@ Returns the chain properties.
 
 ### Query Parameters
 
-|Parameter | Description|
-|--------- | -----------|
-|`author` (string) | The author to query.|
-|`permlink` (string) | The permlink to query.|
-|`date` (string) | The date to query before (ISO format).|
-|`limit` (int) | The number of results to return.|
+| Parameter           | Description                            |
+| ------------------- | -------------------------------------- |
+| `author` (string)   | The author to query.                   |
+| `permlink` (string) | The permlink to query.                 |
+| `date` (string)     | The date to query before (ISO format). |
+| `limit` (int)       | The number of results to return.       |
 
 ```shell
 # Exemplo de Requisição
@@ -242,6 +242,335 @@ curl -s --data '{"jsonrpc":"2.0", "method":"condenser_api.get_discussions_by_aut
       "beneficiaries": [],
       "max_accepted_payout": "1000000.000 BLURT",
       "percent_blurt": 10000
+    }
+  ],
+  "id": 1
+}
+```
+
+## broadcast_transaction
+
+Used to broadcast a transaction.
+
+### Require Parameters
+
+| Parameter                 | Description                                       |
+| ------------------------- | ------------------------------------------------- |
+| signatures (array/string) | Need a valid signatures(hash)                     |
+| expiration (string/data)  | Future data expiration                            |
+| ref_block_num (int)       | Need get a valid ref_block_num                    |
+| ref_block_prefix (int)    | Need get from blockchain a valid ref_block_prefix |
+| operations (array)        |                                                   |
+
+example operations:
+["vote",{"voter":"hiveio","author":"alice","permlink":"a-post-by-alice","weight":10000}]
+['transfer', { from, to, amount, memo }]
+['account_update', {account,owner,active,posting,memo_key ,json_metadata ,posting_json_metadata}] 'Public keys'
+...
+
+```shell
+# Exemplo de Requisição
+curl -s --data '{"jsonrpc":"2.0", "method":"condenser_api.broadcast_transaction", "params":[{"ref_block_num":1097,"ref_block_prefix":2181793527,"expiration":"2025-11-03T02:55:21","operations":[["vote",{"voter":"hiveio","author":"alice","permlink":"a-post-by-alice","weight":10000}]],"extensions":[],"signatures":[]}], "id":1}' https://rpc.blurt.blog
+```
+
+> O comando acima retorna um JSON estruturado assim:
+
+```json
+{}
+```
+
+## broadcast_transaction_synchronous
+
+Used to broadcast a transaction and waits for it to be processed synchronously.
+
+### Require Parameters
+
+| Parameter                 | Description                                       |
+| ------------------------- | ------------------------------------------------- |
+| signatures (array/string) | Need a valid signatures(hash)                     |
+| expiration (string/data)  | Future data expiration                            |
+| ref_block_num (int)       | Need get a valid ref_block_num                    |
+| ref_block_prefix (int)    | Need get from blockchain a valid ref_block_prefix |
+| operations (array)        |                                                   |
+
+example operations:
+["vote",{"voter":"hiveio","author":"alice","permlink":"a-post-by-alice","weight":10000}]
+['transfer', { from, to, amount, memo }]
+['account_update', {account,owner,active,posting,memo_key ,json_metadata ,posting_json_metadata}] 'Public keys'
+...
+
+```shell
+# Exemplo de Requisição
+curl -s --data '{"jsonrpc":"2.0", "method":"condenser_api.broadcast_transaction", "params":[{"ref_block_num":1097,"ref_block_prefix":2181793527,"expiration":"2025-11-03T02:55:21","operations":[["vote",{"voter":"hiveio","author":"alice","permlink":"a-post-by-alice","weight":10000}]],"extensions":[],"signatures":[]}], "id":1}' https://rpc.blurt.blog
+```
+
+> O comando acima retorna um JSON estruturado assim:
+
+```json
+{}
+```
+
+## get_account_count
+
+Returns the number of accounts.
+
+```shell
+# Exemplo de Requisição
+curl -s --data '{"jsonrpc":"2.0", "method":"condenser_api.get_account_count", "params":[], "id":1}' https://rpc.blurt.world
+```
+
+> O comando acima retorna um JSON estruturado assim:
+
+```json
+{ "jsonrpc": "2.0", "result": 1398633, "id": 1 }
+```
+
+## get_account_history
+
+Returns a history of all operations for a given account. Parameters:
+
+### Query Parameters
+
+_account_: username
+_start_: -1 = recent or 1000 = oldest result || ["bgo", -1, 1000] || ["bgo", 1000, 1000]
+_limit_: 1000 is the max allowed ["bgo", -1, 1000]
+_operation_filter_low_: empty = all results, 1 for votes only, 262144 for only custom jsons || ["bgo", -1, 1000, 1] || ["bgo", -1, 1000, 262144]
+the last _operation_filter_low_: empty all result, 1 for only proposal payments need the other one 0 || ["bgo", -1, 1000, 0, 1]
+
+[account(string), start(int), limit(int), operation_filter_low(int), operation_filter_low(int) ]
+
+```shell
+# Exemplo de Requisição
+curl -s --data '{"jsonrpc":"2.0", "method":"condenser_api.get_account_history", "params":["bgo", -1, 2], "id":1}'  https://rpc.blurt.world
+```
+
+> O comando acima retorna um JSON estruturado assim:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": [
+    [
+      5158,
+      {
+        "trx_id": "d833294550cc1b540bb9be95771e4bbd4120bcdd",
+        "block": 54747550,
+        "trx_in_block": 0,
+        "op_in_trx": 0,
+        "virtual_op": 0,
+        "timestamp": "2025-11-02T23:12:09",
+        "op": [
+          "vote",
+          {
+            "voter": "bgo",
+            "author": "pichat",
+            "permlink": "zcash-soars-while-bitcoin-freezes-is-liquidity-flowing-the-other-way-1762042557167",
+            "weight": 10000
+          }
+        ]
+      }
+    ],
+    [
+      5160,
+      {
+        "trx_id": "1782ec37014b95a4b6446a666b797c90e6ad9fbc",
+        "block": 54747560,
+        "trx_in_block": 0,
+        "op_in_trx": 0,
+        "virtual_op": 0,
+        "timestamp": "2025-11-02T23:12:39",
+        "op": [
+          "vote",
+          {
+            "voter": "bgo",
+            "author": "amani2765",
+            "permlink": "5zsa16-using-cypherflow-ai-with-pay-as-you-go-models",
+            "weight": 10000
+          }
+        ]
+      }
+    ]
+  ],
+  "id": 1
+}
+```
+
+## get_accounts
+
+Returns accounts, queried by name. Parameters: account:string array; delayed_votes_active:boolean
+
+### Query Parameters
+
+| account (string array) |                                                  |
+| ---------------------- | ------------------------------------------------ |
+| ["bgo", "hellobot"]    | Queries for accounts named “hiveio” and “alice”. |
+
+Or more accounts...
+
+```shell
+# Exemplo de Requisição
+curl -s --data '{"jsonrpc":"2.0", "method":"condenser_api.get_accounts", "params":[["bgo", "hellobot"]], "id":1}' https://rpc.blurt.world
+```
+
+> O comando acima retorna um JSON estruturado assim:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "result": [
+    {
+      "id": 1391955,
+      "name": "bgo",
+      "owner": {
+        "weight_threshold": 1,
+        "account_auths": [],
+        "key_auths": [
+          ["BLT8g31Ex2n1oJZNAkawhwKqiwVNAzBk73q2UoJgu6b1Ge92PphSE", 1]
+        ]
+      },
+      "active": {
+        "weight_threshold": 1,
+        "account_auths": [],
+        "key_auths": [
+          ["BLT5QixVjadKTjA7aDpXvkwneVH3YzejdRvV6XSpGpmViM1mpEtf4", 1]
+        ]
+      },
+      "posting": {
+        "weight_threshold": 1,
+        "account_auths": [],
+        "key_auths": [
+          ["BLT6rgd5LiUc7YRHevacoUH5BBkDokgxRw67mLCFHwSDP9mzCwSVh", 1]
+        ]
+      },
+      "memo_key": "BLT7NqRhs5hGNGwHQKD5x2eT4h4G6s5dZewhApH1Y24xrfLiADVEE",
+      "json_metadata": "{\"profile\":{\"profile_image\":\"https://img.blurt.world/blurtimage/bgo/d16c3f05cd38e0063077501cf1b29a940ea9a352.png\",\"name\":\"BGO\"}}",
+      "posting_json_metadata": "",
+      "proxy": "",
+      "last_owner_update": "1970-01-01T00:00:00",
+      "last_account_update": "2025-10-19T20:36:51",
+      "created": "2021-07-11T04:15:30",
+      "mined": false,
+      "recovery_account": "sm-silva",
+      "last_account_recovery": "1970-01-01T00:00:00",
+      "reset_account": "null",
+      "comment_count": 0,
+      "lifetime_vote_count": 0,
+      "post_count": 312,
+      "can_vote": true,
+      "voting_manabar": {
+        "current_mana": "81369347882",
+        "last_update_time": 1762125159
+      },
+      "voting_power": 8178,
+      "balance": "740.351 BLURT",
+      "savings_balance": "0.000 BLURT",
+      "savings_withdraw_requests": 0,
+      "reward_blurt_balance": "0.445 BLURT",
+      "reward_vesting_balance": "5.091061 VESTS",
+      "reward_vesting_blurt": "5.754 BLURT",
+      "vesting_shares": "99363.782798 VESTS",
+      "delegated_vesting_shares": "0.000000 VESTS",
+      "received_vesting_shares": "125.534391 VESTS",
+      "vesting_withdraw_rate": "0.000000 VESTS",
+      "next_vesting_withdrawal": "1969-12-31T23:59:59",
+      "withdrawn": 0,
+      "to_withdraw": 0,
+      "withdraw_routes": 0,
+      "curation_rewards": 1722106,
+      "posting_rewards": 8406596,
+      "proxied_vsf_votes": [0, 0, 0, 0],
+      "witnesses_voted_for": 0,
+      "last_post": "2025-11-01T21:19:24",
+      "last_root_post": "2025-11-01T14:04:48",
+      "last_vote_time": "2025-11-02T23:12:39",
+      "post_bandwidth": 0,
+      "pending_claimed_accounts": 0,
+      "vesting_balance": "0.000 BLURT",
+      "transfer_history": [],
+      "market_history": [],
+      "post_history": [],
+      "vote_history": [],
+      "other_history": [],
+      "witness_votes": [],
+      "tags_usage": [],
+      "guest_bloggers": []
+    },
+    {
+      "id": 503019,
+      "name": "hellobot",
+      "owner": {
+        "weight_threshold": 1,
+        "account_auths": [],
+        "key_auths": [
+          ["BLT4x8H1Ymb1Kf7WFxVYpUpStotMykjuRAVpg4KoBqQVQfEtHCSZy", 1]
+        ]
+      },
+      "active": {
+        "weight_threshold": 1,
+        "account_auths": [],
+        "key_auths": [
+          ["BLT8CPPHdfFYfGf9mDojyQ3KduNDa2Q899WZVNJC4bSt5wAJgf39y", 1]
+        ]
+      },
+      "posting": {
+        "weight_threshold": 1,
+        "account_auths": [],
+        "key_auths": [
+          ["BLT7EpgLTegNPEfkCRK7tBjoAV773y7KYKrPqp1bpidSwcHqBGop9", 1]
+        ]
+      },
+      "memo_key": "BLT7TUtCBiBKeVrV1pbygyn8sRyXJ689j5v58QH8Axt6BDSjEPReY",
+      "json_metadata": "",
+      "posting_json_metadata": "",
+      "proxy": "",
+      "last_owner_update": "1970-01-01T00:00:00",
+      "last_account_update": "1970-01-01T00:00:00",
+      "created": "1970-01-01T00:00:00",
+      "mined": true,
+      "recovery_account": "",
+      "last_account_recovery": "1970-01-01T00:00:00",
+      "reset_account": "null",
+      "comment_count": 0,
+      "lifetime_vote_count": 0,
+      "post_count": 1050,
+      "can_vote": true,
+      "voting_manabar": {
+        "current_mana": "9208619537",
+        "last_update_time": 1762124709
+      },
+      "voting_power": 6185,
+      "balance": "23.322 BLURT",
+      "savings_balance": "0.000 BLURT",
+      "savings_withdraw_requests": 0,
+      "reward_blurt_balance": "10.128 BLURT",
+      "reward_vesting_balance": "53.479118 VESTS",
+      "reward_vesting_blurt": "60.426 BLURT",
+      "vesting_shares": "14888.154316 VESTS",
+      "delegated_vesting_shares": "0.000000 VESTS",
+      "received_vesting_shares": "0.000000 VESTS",
+      "vesting_withdraw_rate": "0.000000 VESTS",
+      "next_vesting_withdrawal": "1969-12-31T23:59:59",
+      "withdrawn": 132731000,
+      "to_withdraw": 132731000,
+      "withdraw_routes": 0,
+      "curation_rewards": 1249911,
+      "posting_rewards": 7780779,
+      "proxied_vsf_votes": [0, 0, 0, 0],
+      "witnesses_voted_for": 0,
+      "last_post": "2025-11-02T23:05:09",
+      "last_root_post": "2025-11-02T23:05:09",
+      "last_vote_time": "2025-11-02T23:05:09",
+      "post_bandwidth": 0,
+      "pending_claimed_accounts": 0,
+      "vesting_balance": "0.000 BLURT",
+      "transfer_history": [],
+      "market_history": [],
+      "post_history": [],
+      "vote_history": [],
+      "other_history": [],
+      "witness_votes": [],
+      "tags_usage": [],
+      "guest_bloggers": []
     }
   ],
   "id": 1
