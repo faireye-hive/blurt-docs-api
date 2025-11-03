@@ -338,6 +338,21 @@
                   <li>
                     <a href="#get_discussions_by_author_before_date" class="toc-h2 toc-link" data-title="get_discussions_by_author_before_date">get_discussions_by_author_before_date</a>
                   </li>
+                  <li>
+                    <a href="#broadcast_transaction" class="toc-h2 toc-link" data-title="broadcast_transaction">broadcast_transaction</a>
+                  </li>
+                  <li>
+                    <a href="#broadcast_transaction_synchronous" class="toc-h2 toc-link" data-title="broadcast_transaction_synchronous">broadcast_transaction_synchronous</a>
+                  </li>
+                  <li>
+                    <a href="#get_account_count" class="toc-h2 toc-link" data-title="get_account_count">get_account_count</a>
+                  </li>
+                  <li>
+                    <a href="#get_account_history" class="toc-h2 toc-link" data-title="get_account_history">get_account_history</a>
+                  </li>
+                  <li>
+                    <a href="#get_accounts" class="toc-h2 toc-link" data-title="get_accounts">get_accounts</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -579,6 +594,345 @@ curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">
       </span><span class="nl">"beneficiaries"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
       </span><span class="nl">"max_accepted_payout"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000000.000 BLURT"</span><span class="p">,</span><span class="w">
       </span><span class="nl">"percent_blurt"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2 id='broadcast_transaction'>broadcast_transaction</h2>
+<p>Used to broadcast a transaction.</p>
+<h3 id='require-parameters'>Require Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>signatures (array/string)</td>
+<td>Need a valid signatures(hash)</td>
+</tr>
+<tr>
+<td>expiration (string/data)</td>
+<td>Future data expiration</td>
+</tr>
+<tr>
+<td>ref_block_num (int)</td>
+<td>Need get a valid ref_block_num</td>
+</tr>
+<tr>
+<td>ref_block_prefix (int)</td>
+<td>Need get from blockchain a valid ref_block_prefix</td>
+</tr>
+<tr>
+<td>operations (array)</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<p>example operations:
+[&quot;vote&quot;,{&quot;voter&quot;:&quot;hiveio&quot;,&quot;author&quot;:&quot;alice&quot;,&quot;permlink&quot;:&quot;a-post-by-alice&quot;,&quot;weight&quot;:10000}]
+[&#39;transfer&#39;, { from, to, amount, memo }]
+[&#39;account_update&#39;, {account,owner,active,posting,memo_key ,json_metadata ,posting_json_metadata}] &#39;Public keys&#39;
+...</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"condenser_api.broadcast_transaction", "params":[{"ref_block_num":1097,"ref_block_prefix":2181793527,"expiration":"2025-11-03T02:55:21","operations":[["vote",{"voter":"hiveio","author":"alice","permlink":"a-post-by-alice","weight":10000}]],"extensions":[],"signatures":[]}], "id":1}'</span> https://rpc.blurt.blog
+</code></pre></div>
+<blockquote>
+<p>O comando acima retorna um JSON estruturado assim:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{}</span><span class="w">
+</span></code></pre></div><h2 id='broadcast_transaction_synchronous'>broadcast_transaction_synchronous</h2>
+<p>Used to broadcast a transaction and waits for it to be processed synchronously.</p>
+<h3 id='require-parameters-2'>Require Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>signatures (array/string)</td>
+<td>Need a valid signatures(hash)</td>
+</tr>
+<tr>
+<td>expiration (string/data)</td>
+<td>Future data expiration</td>
+</tr>
+<tr>
+<td>ref_block_num (int)</td>
+<td>Need get a valid ref_block_num</td>
+</tr>
+<tr>
+<td>ref_block_prefix (int)</td>
+<td>Need get from blockchain a valid ref_block_prefix</td>
+</tr>
+<tr>
+<td>operations (array)</td>
+<td></td>
+</tr>
+</tbody></table>
+
+<p>example operations:
+[&quot;vote&quot;,{&quot;voter&quot;:&quot;hiveio&quot;,&quot;author&quot;:&quot;alice&quot;,&quot;permlink&quot;:&quot;a-post-by-alice&quot;,&quot;weight&quot;:10000}]
+[&#39;transfer&#39;, { from, to, amount, memo }]
+[&#39;account_update&#39;, {account,owner,active,posting,memo_key ,json_metadata ,posting_json_metadata}] &#39;Public keys&#39;
+...</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"condenser_api.broadcast_transaction", "params":[{"ref_block_num":1097,"ref_block_prefix":2181793527,"expiration":"2025-11-03T02:55:21","operations":[["vote",{"voter":"hiveio","author":"alice","permlink":"a-post-by-alice","weight":10000}]],"extensions":[],"signatures":[]}], "id":1}'</span> https://rpc.blurt.blog
+</code></pre></div>
+<blockquote>
+<p>O comando acima retorna um JSON estruturado assim:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{}</span><span class="w">
+</span></code></pre></div><h2 id='get_account_count'>get_account_count</h2>
+<p>Returns the number of accounts.</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"condenser_api.get_account_count", "params":[], "id":1}'</span> https://rpc.blurt.world
+</code></pre></div>
+<blockquote>
+<p>O comando acima retorna um JSON estruturado assim:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w"> </span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w"> </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="mi">1398633</span><span class="p">,</span><span class="w"> </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2 id='get_account_history'>get_account_history</h2>
+<p>Returns a history of all operations for a given account. Parameters:</p>
+<h3 id='query-parameters-5'>Query Parameters</h3>
+<p><em>account</em>: username
+<em>start</em>: -1 = recent or 1000 = oldest result || [&quot;bgo&quot;, -1, 1000] || [&quot;bgo&quot;, 1000, 1000]
+<em>limit</em>: 1000 is the max allowed [&quot;bgo&quot;, -1, 1000]
+<em>operation_filter_low</em>: empty = all results, 1 for votes only, 262144 for only custom jsons || [&quot;bgo&quot;, -1, 1000, 1] || [&quot;bgo&quot;, -1, 1000, 262144]
+the last <em>operation_filter_low</em>: empty all result, 1 for only proposal payments need the other one 0 || [&quot;bgo&quot;, -1, 1000, 0, 1]</p>
+
+<p>[account(string), start(int), limit(int), operation_filter_low(int), operation_filter_low(int) ]</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"condenser_api.get_account_history", "params":["bgo", -1, 2], "id":1}'</span>  https://rpc.blurt.world
+</code></pre></div>
+<blockquote>
+<p>O comando acima retorna um JSON estruturado assim:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">[</span><span class="w">
+      </span><span class="mi">5158</span><span class="p">,</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"trx_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"d833294550cc1b540bb9be95771e4bbd4120bcdd"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"block"</span><span class="p">:</span><span class="w"> </span><span class="mi">54747550</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"trx_in_block"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"op_in_trx"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"virtual_op"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-02T23:12:09"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"op"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"vote"</span><span class="p">,</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"voter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bgo"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">"pichat"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"permlink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"zcash-soars-while-bitcoin-freezes-is-liquidity-flowing-the-other-way-1762042557167"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+    </span><span class="p">[</span><span class="w">
+      </span><span class="mi">5160</span><span class="p">,</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"trx_id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1782ec37014b95a4b6446a666b797c90e6ad9fbc"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"block"</span><span class="p">:</span><span class="w"> </span><span class="mi">54747560</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"trx_in_block"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"op_in_trx"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"virtual_op"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-02T23:12:39"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"op"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="s2">"vote"</span><span class="p">,</span><span class="w">
+          </span><span class="p">{</span><span class="w">
+            </span><span class="nl">"voter"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bgo"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"author"</span><span class="p">:</span><span class="w"> </span><span class="s2">"amani2765"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"permlink"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5zsa16-using-cypherflow-ai-with-pay-as-you-go-models"</span><span class="p">,</span><span class="w">
+            </span><span class="nl">"weight"</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w">
+          </span><span class="p">}</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre></div><h2 id='get_accounts'>get_accounts</h2>
+<p>Returns accounts, queried by name. Parameters: account:string array; delayed_votes_active:boolean</p>
+<h3 id='query-parameters-6'>Query Parameters</h3>
+<table><thead>
+<tr>
+<th>account (string array)</th>
+<th></th>
+</tr>
+</thead><tbody>
+<tr>
+<td>[&quot;bgo&quot;, &quot;hellobot&quot;]</td>
+<td>Queries for accounts named “hiveio” and “alice”.</td>
+</tr>
+</tbody></table>
+
+<p>Or more accounts...</p>
+<div class="highlight"><pre class="highlight shell tab-shell"><code><span class="c"># Exemplo de Requisição</span>
+curl <span class="nt">-s</span> <span class="nt">--data</span> <span class="s1">'{"jsonrpc":"2.0", "method":"condenser_api.get_accounts", "params":[["bgo", "hellobot"]], "id":1}'</span> https://rpc.blurt.world
+</code></pre></div>
+<blockquote>
+<p>O comando acima retorna um JSON estruturado assim:</p>
+</blockquote>
+<div class="highlight"><pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="nl">"jsonrpc"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2.0"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"result"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1391955</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"bgo"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"owner"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"weight_threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"account_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="nl">"key_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">[</span><span class="s2">"BLT8g31Ex2n1oJZNAkawhwKqiwVNAzBk73q2UoJgu6b1Ge92PphSE"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"weight_threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"account_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="nl">"key_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">[</span><span class="s2">"BLT5QixVjadKTjA7aDpXvkwneVH3YzejdRvV6XSpGpmViM1mpEtf4"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"posting"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"weight_threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"account_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="nl">"key_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">[</span><span class="s2">"BLT6rgd5LiUc7YRHevacoUH5BBkDokgxRw67mLCFHwSDP9mzCwSVh"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"memo_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BLT7NqRhs5hGNGwHQKD5x2eT4h4G6s5dZewhApH1Y24xrfLiADVEE"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"json_metadata"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{</span><span class="se">\"</span><span class="s2">profile</span><span class="se">\"</span><span class="s2">:{</span><span class="se">\"</span><span class="s2">profile_image</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">https://img.blurt.world/blurtimage/bgo/d16c3f05cd38e0063077501cf1b29a940ea9a352.png</span><span class="se">\"</span><span class="s2">,</span><span class="se">\"</span><span class="s2">name</span><span class="se">\"</span><span class="s2">:</span><span class="se">\"</span><span class="s2">BGO</span><span class="se">\"</span><span class="s2">}}"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"posting_json_metadata"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_owner_update"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1970-01-01T00:00:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_account_update"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-10-19T20:36:51"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2021-07-11T04:15:30"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"mined"</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"recovery_account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sm-silva"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_account_recovery"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1970-01-01T00:00:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reset_account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"null"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"comment_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"lifetime_vote_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"post_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">312</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"can_vote"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"voting_manabar"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"current_mana"</span><span class="p">:</span><span class="w"> </span><span class="s2">"81369347882"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"last_update_time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1762125159</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"voting_power"</span><span class="p">:</span><span class="w"> </span><span class="mi">8178</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"740.351 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"savings_balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"savings_withdraw_requests"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reward_blurt_balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.445 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reward_vesting_balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5.091061 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reward_vesting_blurt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"5.754 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"vesting_shares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"99363.782798 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"delegated_vesting_shares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000000 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"received_vesting_shares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"125.534391 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"vesting_withdraw_rate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000000 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"next_vesting_withdrawal"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1969-12-31T23:59:59"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"withdrawn"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"to_withdraw"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"withdraw_routes"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"curation_rewards"</span><span class="p">:</span><span class="w"> </span><span class="mi">1722106</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"posting_rewards"</span><span class="p">:</span><span class="w"> </span><span class="mi">8406596</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"proxied_vsf_votes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"witnesses_voted_for"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_post"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-01T21:19:24"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_root_post"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-01T14:04:48"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_vote_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-02T23:12:39"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"post_bandwidth"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pending_claimed_accounts"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"vesting_balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"transfer_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"market_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"post_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"vote_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"other_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"witness_votes"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"tags_usage"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"guest_bloggers"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+    </span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">503019</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"hellobot"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"owner"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"weight_threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"account_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="nl">"key_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">[</span><span class="s2">"BLT4x8H1Ymb1Kf7WFxVYpUpStotMykjuRAVpg4KoBqQVQfEtHCSZy"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"active"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"weight_threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"account_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="nl">"key_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">[</span><span class="s2">"BLT8CPPHdfFYfGf9mDojyQ3KduNDa2Q899WZVNJC4bSt5wAJgf39y"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"posting"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"weight_threshold"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"account_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+        </span><span class="nl">"key_auths"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+          </span><span class="p">[</span><span class="s2">"BLT7EpgLTegNPEfkCRK7tBjoAV773y7KYKrPqp1bpidSwcHqBGop9"</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">]</span><span class="w">
+        </span><span class="p">]</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"memo_key"</span><span class="p">:</span><span class="w"> </span><span class="s2">"BLT7TUtCBiBKeVrV1pbygyn8sRyXJ689j5v58QH8Axt6BDSjEPReY"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"json_metadata"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"posting_json_metadata"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"proxy"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_owner_update"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1970-01-01T00:00:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_account_update"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1970-01-01T00:00:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"created"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1970-01-01T00:00:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"mined"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"recovery_account"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_account_recovery"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1970-01-01T00:00:00"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reset_account"</span><span class="p">:</span><span class="w"> </span><span class="s2">"null"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"comment_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"lifetime_vote_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"post_count"</span><span class="p">:</span><span class="w"> </span><span class="mi">1050</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"can_vote"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"voting_manabar"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"current_mana"</span><span class="p">:</span><span class="w"> </span><span class="s2">"9208619537"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"last_update_time"</span><span class="p">:</span><span class="w"> </span><span class="mi">1762124709</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="nl">"voting_power"</span><span class="p">:</span><span class="w"> </span><span class="mi">6185</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"23.322 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"savings_balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"savings_withdraw_requests"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reward_blurt_balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"10.128 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reward_vesting_balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"53.479118 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"reward_vesting_blurt"</span><span class="p">:</span><span class="w"> </span><span class="s2">"60.426 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"vesting_shares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"14888.154316 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"delegated_vesting_shares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000000 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"received_vesting_shares"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000000 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"vesting_withdraw_rate"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000000 VESTS"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"next_vesting_withdrawal"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1969-12-31T23:59:59"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"withdrawn"</span><span class="p">:</span><span class="w"> </span><span class="mi">132731000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"to_withdraw"</span><span class="p">:</span><span class="w"> </span><span class="mi">132731000</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"withdraw_routes"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"curation_rewards"</span><span class="p">:</span><span class="w"> </span><span class="mi">1249911</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"posting_rewards"</span><span class="p">:</span><span class="w"> </span><span class="mi">7780779</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"proxied_vsf_votes"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w">
+      </span><span class="nl">"witnesses_voted_for"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_post"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-02T23:05:09"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_root_post"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-02T23:05:09"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"last_vote_time"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-11-02T23:05:09"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"post_bandwidth"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"pending_claimed_accounts"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"vesting_balance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0.000 BLURT"</span><span class="p">,</span><span class="w">
+      </span><span class="nl">"transfer_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"market_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"post_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"vote_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"other_history"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"witness_votes"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"tags_usage"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="nl">"guest_bloggers"</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
     </span><span class="p">}</span><span class="w">
   </span><span class="p">],</span><span class="w">
   </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w">
