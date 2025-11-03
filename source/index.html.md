@@ -331,13 +331,23 @@ Returns a history of all operations for a given account. Parameters:
 
 ### Query Parameters
 
-_account_: username
-_start_: -1 = recent or 1000 = oldest result || ["bgo", -1, 1000] || ["bgo", 1000, 1000]
-_limit_: 1000 is the max allowed ["bgo", -1, 1000]
-_operation_filter_low_: empty = all results, 1 for votes only, 262144 for only custom jsons || ["bgo", -1, 1000, 1] || ["bgo", -1, 1000, 262144]
-the last _operation_filter_low_: empty all result, 1 for only proposal payments need the other one 0 || ["bgo", -1, 1000, 0, 1]
+| Nome | O que faz | Exemplo |
+|------|------------|----------|
+| `account` | Nome da conta | `"bgo"` |
+| `start` | Onde começar (`-1` = novo, `1000` = antigo) | `-1` |
+| `limit` | Quantos mostrar (máx. `1000`) | `1000` |
+| `operation_filter_low` | Tipo de ação:<br>• vazio = tudo<br>• `1` = votos<br>• `262144` = mensagens<br>• `0, 1` = pagamentos | `1` |
 
-[account(string), start(int), limit(int), operation_filter_low(int), operation_filter_low(int) ]
+---
+
+## 💡 Exemplos
+
+```js
+["bgo", -1, 1000]          // tudo
+["bgo", -1, 1000, 1]       // só votos
+["bgo", -1, 1000, 262144]  // só mensagens
+["bgo", -1, 1000, 0, 1]    // só pagamentos
+```
 
 ```shell
 # Exemplo de Requisição
